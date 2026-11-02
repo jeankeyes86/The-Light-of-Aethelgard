@@ -415,7 +415,7 @@ ICON.heal=sv(`<path d='M16 28C3 18 3 7 10 5c3-1 5 1 6 4 1-3 3-5 6-4 7 2 7 13-6 2
 ICON.summon=sv(`<ellipse cx='16' cy='25' rx='12' ry='4' fill='none' stroke='#9a7aff' stroke-width='2.5'/><ellipse cx='16' cy='19' rx='5.5' ry='4.4' fill='#e8e0c8' stroke='#222'/><circle cx='8' cy='12' r='2.6' fill='#e8e0c8' stroke='#222'/><circle cx='13' cy='7' r='2.6' fill='#e8e0c8' stroke='#222'/><circle cx='19' cy='7' r='2.6' fill='#e8e0c8' stroke='#222'/><circle cx='24' cy='12' r='2.6' fill='#e8e0c8' stroke='#222'/>`);
 ICON.poly=sv(`<defs><clipPath id='pmL'><rect x='0' y='0' width='16' height='32'/></clipPath><clipPath id='pmR'><rect x='16' y='0' width='16' height='32'/></clipPath></defs><g clip-path='url(#pmL)' stroke='#2a1a10' stroke-width='.9'><circle cx='16' cy='8' r='5' fill='#f0c8a0'/><path d='M8 29v-9a5 5 0 0 1 5-5h6a5 5 0 0 1 5 5v9z' fill='#4a6ac0'/><path d='M8 20l-3 7' fill='none' stroke-width='2.6' stroke='#f0c8a0'/></g><g clip-path='url(#pmR)' stroke='#102008' stroke-width='.9'><circle cx='16' cy='8' r='5.7' fill='#6a9a3a'/><path d='M21 6l6-4-2 7z' fill='#6a9a3a'/><path d='M18 11l1 3.2 1.3-3z' fill='#fff' stroke='none'/><path d='M7 29v-9a6 6 0 0 1 6-6h6a6 6 0 0 1 6 6v9z' fill='#7a4a2a'/><path d='M24 20l4 7' fill='none' stroke-width='3' stroke='#6a9a3a'/></g><path d='M16 1v30' stroke='#e07aff' stroke-width='1.6' stroke-dasharray='2.2 1.8'/><path d='M4 4l1 2 2 1-2 1-1 2-1-2-2-1 2-1zM27 24l.8 1.6 1.6.8-1.6.8-.8 1.6-.8-1.6-1.6-.8 1.6-.8z' fill='#f0b0ff'/>`);
 ICON.wolf=sv(`<path d='M4 20l3-12 5 5h8l5-5 3 12-5 8h-14z' fill='#9aa0aa' stroke='#222' stroke-width='1.5'/><circle cx='12' cy='18' r='1.6' fill='#ffd34a'/><circle cx='20' cy='18' r='1.6' fill='#ffd34a'/><path d='M14 24h4l-2 3z' fill='#222'/>`);
-const cheb=(a,b)=>Math.max(Math.abs(a.x-b.x),Math.abs(a.y-b.y)),mgy=()=>ES('magery'),ratNo=()=>{P.task=null;if(gt()>(P.rn||0)){P.rn=gt()+3000;say('You are a rat. Rats scurry; they do not fight. (You can still pickpocket while sneaking.)','#c9f')}},elem=(m,now)=>{let t=0;const E=GB.el;if(E.fire){t+=E.fire;fl(m.x,m.y-.3,'+'+E.fire,'#ff9a3a')}if(E.cold){t+=E.cold;fl(m.x,m.y-.6,'+'+E.cold,'#8ae0ff');m.next=Math.max(m.next|0,now+700)}if(E.light){t+=E.light;fl(m.x,m.y-.9,'+'+E.light,'#fff27a')}return t};
+const cheb=(a,b)=>Math.max(Math.abs(a.x-b.x),Math.abs(a.y-b.y)),mgy=()=>ES('magery'),ratNo=()=>{P.task=null;if(gt()>(P.rn||0)){P.rn=gt()+3000;say('You are a rat. Rats scurry; they do not fight. (You can still pickpocket while sneaking.)','#c9f')}},elem=(m,now)=>{let t=0;const E=GB.el;try{g3ElFx(m,E,now)}catch(_){}if(E.fire){t+=E.fire;fl(m.x,m.y-.3,'+'+E.fire,'#ff9a3a')}if(E.cold){t+=E.cold;fl(m.x,m.y-.6,'+'+E.cold,'#8ae0ff');m.next=Math.max(m.next|0,now+700)}if(E.light){t+=E.light;fl(m.x,m.y-.9,'+'+E.light,'#fff27a')}return t};
 function nearFree(x,y){for(let r=1;r<=5;r++)for(let dy=-r;dy<=r;dy++)for(let dx=-r;dx<=r;dx++)if(Math.max(Math.abs(dx),Math.abs(dy))==r&&free(x+dx,y+dy))return[x+dx,y+dy];return null}
 function lifesteal(d){if(!P.fam||P.fam.k!='bat'||P.hp>=P.mh||P.dead)return;const h=Math.max(1,Math.round(d*(.05+.2*mgy()/100)));P.hp=Math.min(P.mh,P.hp+h);fl(P.x,P.y,'+'+h,'#e66')}
 const CAT={rat:'rat',orc:'orc',warlord:'orc',skel:'undead',ghoul:'undead',wraith:'undead',lich:'undead',wboss:'undead',wbork:'orc',wbdrg:'drake',wbrat:'rat',drake:'drake'};
@@ -1345,11 +1345,11 @@ function boxUI(){sortG(BX);sortG(bag);const rk=Object.keys(RGI).filter(k=>(inv[k
 const mrow=(k,nm)=>`<div style='border-top:1px solid #4a3a22;padding-top:4px;margin-top:4px'>${nm}<div class='d'>Carrying ${inv[k]|0} · Stored ${BXM[k]|0}</div><div style='display:flex;gap:4px'><button data-x='rs:${k}' ${(inv[k]|0)>0?'':'disabled'}>Store all</button><button data-x='rt:${k}' ${(BXM[k]|0)>0?'':'disabled'}>Take all</button></div></div>`;
 const mset=(pre,label,nm)=>{const ks=ORES.filter(o=>(inv[pre+'_'+o.k]|0)>0||(BXM[pre+'_'+o.k]|0)>0);const cin=ORES.reduce((s,o)=>s+(inv[pre+'_'+o.k]|0),0),cst=ORES.reduce((s,o)=>s+(BXM[pre+'_'+o.k]|0),0);
 return bsec(pre,`${label} · ${cin} carried · ${cst} stored`,ks.length?`<div style='display:flex;gap:4px;margin-bottom:2px'><button data-x='ra:${pre}' ${cin>0?'':'disabled'}>Store all ${label.toLowerCase()}</button><button data-x='rb:${pre}' ${cst>0?'':'disabled'}>Take all ${label.toLowerCase()}</button></div>`+ks.map(o=>mrow(pre+'_'+o.k,PR[pre+'_'+o.k][0])).join(''):`<div class='d'>You have no ${label.toLowerCase()}.</div>`)};
-$('box').innerHTML=BK+`<h4>Storage Chest</h4><div class='d'>Safe storage for gold, gear, reagents, ore and ingots. Stored items cannot be sold by accident. Tap a heading to fold or open it.</div>`
+$('box').innerHTML=BK+`<h4>Storage Chest</h4><div class='d'>Safe storage for gold, gear, arrows, potions, reagents, ore and ingots. Stored items cannot be sold by accident. Tap a heading to fold or open it.</div>`
 +bsec('g',`Gold · ${inv.gold|0} carried · ${BXG} stored`,`<div style='display:flex;gap:4px;flex-wrap:wrap'><button data-x='gs:a' ${(inv.gold|0)>0?'':'disabled'}>Store all</button><button data-x='gs:h' ${(inv.gold|0)>=100?'':'disabled'}>Store 100</button><button data-x='gt:h' ${BXG>=100?'':'disabled'}>Take 100</button><button data-x='gt:a' ${BXG>0?'':'disabled'}>Take all</button></div>`)
 +bsec('s',`Stored gear (${BX.length})`,BX.length?grp(BX,id=>`<button data-bw='${BX.indexOf(id)}'>${gnm(id)}<br><span class='d'>${st(GEAR[id])} · tap to take out</span></button>`):`<div class='d'>Empty.</div>`)
 +bsec('p',`In your pack (${bag.length})`,bag.length?grp(bag,id=>`<button data-bs='${bag.indexOf(id)}'>${gnm(id)}<br><span class='d'>tap to store</span></button>`):`<div class='d'>Nothing to store.</div>`)
-+bsec('r','Reagents',rk.length?rk.map(k=>mrow(k,RGI[k][0])).join(''):`<div class='d'>You have no reagents.</div>`)
++bsec('a','Arrows & potions',g3ApRows(mrow))+bsec('r','Reagents',rk.length?rk.map(k=>mrow(k,RGI[k][0])).join(''):`<div class='d'>You have no reagents.</div>`)
 +mset('o','Ore')+mset('i','Ingots')}
 function craftArr(n){n=Math.min(n,inv.log|0);if(n<1)return;inv.log-=n;inv.arr=(inv.arr|0)+6*n;sfx('anvil');say(`You craft ${6*n} arrows.`,'#e0b95a');craftUI();ui()}
 function craftUI0r(){const mx=inv.log|0;return `<h4>Carpentry</h4><div class='d'>Turn harvested logs into bows and arrows. Crafted bows sell for a little more than their parts.</div>`+Object.keys(RCP).map(k=>{const r=RCP[k],ok=inv.log>=r.lg&&inv.tail>=r.tl;return `<button data-cr='${k}' ${ok?'':'disabled'}>${r.n}<br><span class='d'>${r.lg} logs${r.tl?' + '+r.tl+' rat tails':''}${k=='sbow'?' · sells 10g':k=='lbow'?' · sells 20g':''}</span></button>`+(k=='arr'?`<div style='display:flex;gap:4px;flex-wrap:wrap;margin:2px 0 6px'>`+[5,10,25,50].map(n=>`<button data-x='ca:${n}' style='width:auto;margin:0;padding:4px 8px' ${mx>=n?'':'disabled'}>×${n}<br><span class='d'>${n*6} arrows</span></button>`).join('')+`<button data-x='ca:m' style='width:auto;margin:0;padding:4px 8px' ${mx>=1?'':'disabled'}>Max<br><span class='d'>${mx*6} arrows</span></button></div>`:'')}).join('')+`<div class='d' style='margin-top:6px'>Logs ${inv.log} · Tails ${inv.tail} · Arrows ${inv.arr|0}</div>`}
@@ -4328,7 +4328,7 @@ function poseFire_(D,t){dRest(D);// rear back, then lunge and breathe fire with 
 const DPOSE_={idle:poseIdle_,walk:poseWalk_,fire:poseFire_};
 
 const DPAL={drake:DC,wbdrg:{body:'#4a4440',dark:'#2c2826',belly:'#d0863a',wing:'#3a2c28',wingBone:'#5a4a44',spike:'#ff9a3a',horn:'#e8dcc4',claw:'#1a1614',eye:'#ff7a1a'}};
-const MON3={drake:{scale:.82,vk:1.75},wbdrg:{scale:.82,vk:1.75}};
+const MON3={drake:{scale:1.0,vk:2.13},wbdrg:{scale:1.0,vk:2.13}};
 const MST=new WeakMap();
 function monModel(k){const key='M|'+k;let D=MODELS.get(key);if(!D){D=buildDragon('story',DPAL[k]);D.k=k;
   // a glow at the mouth while it breathes
@@ -5138,7 +5138,7 @@ const MODELS=new Map();
 const N3=(o)=>{const n=new Node(o);n.mat=o.mat||0;return n};
 function weaponNodes(J,w){const g=N3({});J.wr.add(g);const c=w.c,v=w.v,glowM=w.mg?.4:0;
  const grip=(len)=>g.add(N3({mesh:mesh('g3grip'+len,()=>capsule(.018,.018,len,8)),p:[0,len/2,0],c:'#4a2e16',ow:.6,mat:M_.leather}),N3({mesh:mesh('g3pom',()=>sphere(.03,10,8)),p:[0,len/2+.015,0],c:'#c8a040',met:.7,ow:.6}));
- if(v=='halberd'){g.add(N3({mesh:mesh('g3pole',()=>capsule(.02,.02,1.6,8)),p:[0,1.0,0],c:'#7a5432',mat:M_.wood,ow:.6}),N3({mesh:mesh('g3hb',()=>extrude([[0,.1],[.16,.08],[.2,-.02],[.14,-.1],[0,-.06]],.02)),p:[0,.85,0],r:[0,PI/2,0],c:'#cfd6de',met:.8,mat:M_.metal,ow:.7}),N3({mesh:mesh('g3hbs',()=>lathe([[0,.2],[.025,0],[0,0]],8)),p:[0,1.0,0],c:'#dfe4ea',met:.8,ow:.5}),N3({mesh:mesh('g3hbt',()=>torus(.03,.012,10,6)),p:[0,.25,0],c:w.pl||'#c33',ow:.4}));return g}
+ if(v=='halberd'){g.add(N3({mesh:mesh('g3pole',()=>capsule(.02,.02,1.6,8)),p:[0,1.0,0],c:'#7a5432',mat:M_.wood,ow:.6}),N3({mesh:mesh('g3hb',()=>extrude([[0,.1],[.16,.08],[.2,-.02],[.14,-.1],[0,-.06]],.02)),p:[0,.85,0],r:[0,-PI/2,0],c:'#cfd6de',met:.8,mat:M_.metal,ow:.7}),N3({mesh:mesh('g3hbs',()=>lathe([[0,.2],[.025,0],[0,0]],8)),p:[0,1.0,0],c:'#dfe4ea',met:.8,ow:.5}),N3({mesh:mesh('g3hbt',()=>torus(.03,.012,10,6)),p:[0,.25,0],c:w.pl||'#c33',ow:.4}));return g}
  if(v=='cane'){// a crooked walking stick, the crook in his hand and the tip on the ground
   g.add(N3({mesh:mesh('g3cane2',()=>capsule(.016,.014,1.02,8)),p:[0,0,0],c:w.c,mat:M_.wood,ow:.6}),N3({mesh:mesh('g3crook',()=>torus(.04,.016,12,6,0,PI)),p:[0,.0,.04],r:[0,PI/2,PI/2],c:w.c,mat:M_.wood,ow:.6}));return g}
  if(v=='staff'){g.add(N3({mesh:mesh('g3staff',()=>capsule(.022,.022,1.5,8)),p:[0,.95,0],c:'#9a7438',mat:M_.wood,ow:.6}),N3({mesh:mesh('g3sun',()=>sphere(.06,14,10)),p:[0,1.02,0],c:'#ffd75a',mat:M_.glow,ow:.6}),N3({mesh:mesh('g3sunr',()=>torus(.09,.012,18,6)),p:[0,1.02,0],r:[PI/2,0,0],c:'#e0b030',met:.6,ow:.4}));return g}
@@ -5146,7 +5146,7 @@ function weaponNodes(J,w){const g=N3({});J.wr.add(g);const c=w.c,v=w.v,glowM=w.m
  const L=v=='dag'?.36:v=='great'?1.0:v=='kat'?.86:.8,W=v=='dag'?.032:v=='great'?.04:v=='kat'?.02:.028,gl_=v=='great'?.22:.15;grip(gl_);
  g.add(N3({mesh:mesh('g3guard'+v,()=>v=='kat'?torus(.045,.012,14,6):box(.028,.028,v=='dag'?.14:v=='great'?.28:.21)),p:[0,-.085,0],r:v=='kat'?[PI/2,0,0]:[0,0,0],c:v=='kat'?'#2a2a2a':'#c8a040',met:.7,ow:.7}),
   N3({mesh:mesh('g3blade'+v,()=>extrude([[-W,0],[W,0],[W*.85,-L*.9],[0,-L],[-W*.85,-L*.9]],.016)),p:[0,-.1,0],r:[v=='kat'?.08:0,PI/2,0],c:c,met:1,ow:.7,mat:M_.metal}));
- if(w.mg||w.mw)g.add(N3({mesh:mesh('g3glow'+v,()=>extrude([[-W*.4,0],[W*.4,0],[0,-L*.92]],.02)),p:[0,-.1,0],r:[0,PI/2,0],c:c,mat:M_.glow,ow:0}));return g}
+ if(w.mg||w.mw)g.add(N3({mesh:mesh('g3glow'+v,()=>extrude([[-W*.4,0],[W*.4,0],[0,-L*.92]],.02)),p:[0,-.1,0],r:[v=='kat'?.08:0,PI/2,0],c:c,mat:M_.glow,ow:0}));return g}
 function toolNodes(J){const ax=N3({}),pk=N3({});J.wr.add(ax,pk);
  ax.add(N3({mesh:mesh('g3thaft',()=>capsule(.022,.024,.7,10)),p:[0,.12,0],c:'#8a6438',mat:M_.wood,ow:.7}),N3({mesh:mesh('g3tax',()=>extrude([[0,.02],[.16,.09],[.19,0],[.16,-.1],[0,-.05]],.028)),p:[0,-.5,0],r:[0,PI/2,0],c:'#aab2bc',met:.7,mat:M_.metal,ow:.8}));
  pk.add(N3({mesh:mesh('g3thaft',()=>capsule(.022,.024,.7,10)),p:[0,.12,0],c:'#8a6438',mat:M_.wood,ow:.7}),N3({mesh:mesh('g3pick',()=>extrude([[-.3,.0],[-.08,.04],[.08,.04],[.3,0],[.08,-.03],[-.08,-.03]],.03)),p:[0,-.52,0],r:[0,PI/2,0],c:'#8e96a0',met:.6,mat:M_.metal,ow:.8}));
@@ -5171,6 +5171,7 @@ function buildLookBase(sp){const J=buildChar(Object.assign({},sp,{beard:false,br
  if(sp.wpn&&!sp.bow)J.wpn=weaponNodes(J,sp.wpn);toolNodes(J);
  if(sp.bow&&J.bowL)for(const n of J.bowL){if(sp.col.bow!='#cfe8ff')n.mat=M_.wood}
  if(J.sd&&sp.shd){const sd=J.sd,c=hex(sp.shd.c);if(sp.shd.v=='buc'){sd.ch.length=0;sd.add(N3({mesh:mesh('g3buc',()=>lathe([[0,.03],[.12,.02],[.15,0],[.15,-.02],[0,-.02]],24)),r:[PI/2,0,0],c:sp.shd.c,met:.4,mat:M_.metal,ow:.7}),N3({mesh:mesh('g3boss',()=>sphere(.04,12,8)),p:[0,0,.03],c:'#c8ccd2',met:.8,ow:.5}))}
+  else if(sp.shd.v=='kite')aegisNodes(sd);
   else{sd.ch[0].c=c;const bs_=GEAR[eq.shield]&&GEAR[eq.shield].bs_||eq.shield;if(bs_!='hsh')sd.ch[0].pat=0}}
  if(sp.plate){J.spine.add(N3({mesh:mesh('g3brst',()=>lathe([[0,.62],[.17,.6],[.235,.5],[.225,.36],[.19,.22],[.2,.08],[0,.08]],24)),s:[1.04,1,.7],c:sp.col.mail,met:.6,mat:M_.metal,ow:.8}));
   for(const s of[-1,1])J['sh'+s].add(N3({mesh:mesh('g3paul',()=>sphere(.1,14,10,0,2*PI,0,PI*.55)),p:[0,.02,0],s:[1.05,.8,1],c:sp.col.mail,met:.6,mat:M_.metal,ow:.7}))}
@@ -5223,7 +5224,9 @@ function npcExtras(J,sp){const T=sp.tabard?'#2f4f8f':null;
  if(sp.outfit=='rogue')J.spine.add(N3({mesh:mesh('g3x1',()=>torus(.2,.016,26,6)),p:[0,.38,0],r:[0,0,.75],s:[1,1,.68],c:'#2a1a10',ow:.4}),N3({mesh:mesh('g3x1',()=>torus(.2,.016,26,6)),p:[0,.38,0],r:[0,0,-.75],s:[1,1,.68],c:'#2a1a10',ow:.4}));
  if(sp.outfit=='mage')for(const[x,y]of[[-.1,.3],[.08,.42],[.0,.15],[.12,.22]])J.spine.add(N3({mesh:mesh('g3star',()=>sphere(.014,6,5)),p:[x,y,.16-Math.abs(x)*.25],c:'#ffd75a',mat:M_.glow,ow:0}))}
 function buildNpc(sp){const J=buildLookBase(sp);npcExtras(J,sp);return J}
-function npcIdle(J,t,sp){if(sp.id=='garr'||sp.npc=='smith'){IDLE.garr(J,t);return}if(sp.bow){IDLE.tar(J,t);return}if(sp.cane){caneIdle(J,t);return}
+// the archer checks her bow now and then (about once every 16 s), and otherwise stands easy with it lowered
+const BIDLE=[16,4.2];
+function npcIdle(J,t,sp){if(sp.id=='garr'||sp.npc=='smith'){IDLE.garr(J,t);return}if(sp.bow){const u=t*BIDLE[0]/BIDLE[1];if(u<1)IDLE.tar(J,u);else{archer(J,0,0);J.body.p=[0,0,0]}return}if(sp.cane){caneIdle(J,t);return}
  rest2(J);const b=Math.sin(t*2*PI),sw=Math.sin(t*2*PI+.8);J.body.p=[0,b*.006,0];J.spine.r=[b*.012,sw*.04,0];J.head.r=[0,Math.sin(t*2*PI*.5)*.3,0];
  for(const s_ of[-1,1]){J['sh'+s_].r=[.04+b*.02,0,s_*.1];J['el'+s_].r=[-.18,0,0]}J['leg-1'].r=[-.04,0,-.05];J.leg1.r=[.05,0,.06]}
 // old Wynn leans on his cane: a stoop, the cane hand out in front, the stick kept upright
@@ -5237,24 +5240,33 @@ function npcWalk(J,p,sp){rest2(J);const a=p*2*PI,s_=Math.sin(a);J['leg-1'].r=[-s
  if(sp.kid){J['leg-1'].r[0]*=1.15;J.leg1.r[0]*=1.15}}
 function guardThrust(J,t){rest2(J);const pull=t<.4?Math.sin(t/.4*PI/2):1-Math.min(1,(t-.4)/.2),ext=t<.4?0:t<.6?(t-.4)/.2:1-(t-.6)/.4;
  J['sh-1'].r=[-1.0-.45*ext+.2*pull,0,-.15];J['el-1'].r=[-.9*pull-.1,0,0];J.wr.r=[PI,0,0];J.sh1.r=[-.7,0,.2];J.el1.r=[-.6,0,0];J.spine.r=[.05+.12*ext,-.2*pull,0];J.body.p=[0,0,.1*ext];J['leg-1'].r=[-.2*ext,0,0];J.leg1.r=[.25*ext,0,0]}
+// a staff, halberd or cane is carried upright while running: the arm swings a little, the pole stays head up
+function poleRun(J,t){const s=Math.sin(t*2*PI),lean=J.spine.r[0];J['sh-1'].r=[-.1+s*.1,0,-.42];J['el-1'].r=[-.75,0,0];J.wr.r=[1.0-lean-s*.08,0,.42]}
+// companions fighting: the archer draws and looses, casters cast, Pip makes a quick grab, the rest swing or thrust
+function allyAtk(J,t,e){const D=typeof GXAD!='undefined'&&GXAD[e.id]||{};
+ if(J.sp.bow){tarShot(J,Math.min(.99,t));return}
+ if(D.mode=='ranged'){hCast(J,t);return}
+ if(D.mode=='thief'){rest2(J);const k=Math.sin(Math.min(1,t/.7)*PI);J.spine.r=[.1+.22*k,0,0];J.body.p=[0,-.04*k,.06*k];J.head.r=[-.1*k,0,0];J['sh-1'].r=[-.25-1.05*k,0,-.12];J['el-1'].r=[-.35+.25*k,0,0];J.wr.r=[-.4*k,0,0];J.sh1.r=[.25,0,.15];J.el1.r=[-.5,0,0];J['leg-1'].r=[-.3*k,0,0];J['kn-1'].r=[.35*k,0,0];J.leg1.r=[.2*k,0,0];return}
+ if(J.sp.wpn&&J.sp.wpn.v=='halberd'){guardThrust(J,t);return}
+ hSwing(J,t)}
 const NST=new WeakMap();
 function drawNpc(e,k,px,py){const sp0key='N|'+k+'|'+(e.id||(e.pk_&&e.pk_.id)||(e.th_&&e.th_.id)||e.nm_||e.name||k);let J=MODELS.get(sp0key);if(!J){const sp=npcSpec(e,k);J=buildNpc(sp);J.sp=sp;MODELS.set(sp0key,J)}
  let S=NST.get(e);if(!S){S={dir:0,ph:0,lx:e.rx,ly:e.ry,mv:-1e9,fa:-1e9,mk:'',cv:document.createElement('canvas')};NST.set(e,S)}const now=NOW;
  const dx=e.rx-S.lx,dy=e.ry-S.ly,dist=Math.hypot(dx,dy);S.lx=e.rx;S.ly=e.ry;const runG=gaitV(S,dist,now)&&!!e.al_;if(dist>.0005&&dist<2){S.ph=(S.ph+dist/(runG?3.4:2))%1;S.mv=now;S.fa=now;const d=dirOf(dx,dy);if(d>=0)S.dir=d}
- if(now-S.mv>=60&&now-S.mv<560)S.ph=(S.ph+(now-(S.pt||now))/900)%1;S.pt=now;const moving=now-S.mv<560,at=(typeof atT=='function')?atT(e):-1,per=J.sp.hammer?2.4:J.sp.bow?4.2:3.6;let anim='idle',t=((now+(gxHS(e.id||k)%3000))/(per*1000))%1;
- if(at>=0&&k=='guard'){anim='atk';t=at;if(e.ld&&(e.ld[0]||e.ld[1])){const d=dirOf(e.ld[0],e.ld[1]);if(d>=0)S.dir=d}S.fa=now}else if(moving){anim=runG?'run':'walk';t=S.ph}
+ if(now-S.mv>=60&&now-S.mv<560)S.ph=(S.ph+(now-(S.pt||now))/900)%1;S.pt=now;const moving=now-S.mv<560,at=(typeof atT=='function')?atT(e):-1,per=J.sp.hammer?2.4:J.sp.bow?BIDLE[0]:3.6;let anim='idle',t=((now+(gxHS(e.id||k)%3000))/(per*1000))%1;
+ if(at>=0&&(k=='guard'||e.al_)){anim='atk';t=at;if(e.ld&&(e.ld[0]||e.ld[1])){const d=dirOf(e.ld[0],e.ld[1]);if(d>=0)S.dir=d}S.fa=now}else if(moving){anim=runG?'run':'walk';t=S.ph}
  else if(typeof dn!='undefined'&&dn===e&&$('dlg')&&$('dlg').style.display=='block'){const d=dirOf(Math.sign(P.x-e.x),Math.sign(P.y-e.y));if(d>=0)S.dir=d;S.fa=now}
  else if(now-S.fa>2600&&!e.al_)S.dir=0;
- const Q={idle:J.sp.hammer||J.sp.bow?40:24,walk:16,run:16,atk:24}[anim];t=Math.floor(t*Q)/Q;const{sc,fw,fh}=sizeNow(),mk=anim+'|'+S.dir+'|'+t+'|'+fw;
+ const Q={idle:J.sp.hammer?40:J.sp.bow?150:24,walk:16,run:16,atk:24}[anim];t=Math.floor(t*Q)/Q;if(anim=='idle'&&J.sp.bow&&t*BIDLE[0]/BIDLE[1]>=1)t=1;const{sc,fw,fh}=sizeNow(),mk=anim+'|'+S.dir+'|'+t+'|'+fw;
  // finished frames are kept and reused, so a looping idle or swing only costs the 3D work once
  if(mk!==S.mk){const ck=J.sp.name+'|'+mk,hit=FCACHE.get(ck);
   if(hit){FCACHE.delete(ck);FCACHE.set(ck,hit);S.mk=mk;S.src=hit;blit(px,py,fw,fh,1,hit);return true}
   // a few new frames per screen refresh at most; anyone over budget keeps their last frame for a moment
   if(!rbOk(now,S,ck,px,py)){blit(px,py,S.fw||fw,S.fh||fh,1,S.src);return true}
   S.mk=mk;J.root.r=[0,Math.atan2(DIRS8[S.dir][0],DIRS8[S.dir][1]),0];J.root.p=[0,0,0];
-  if(anim=='walk')npcWalk(J,t,J.sp);else if(anim=='run')hRun(J,t);else if(anim=='atk')guardThrust(J,t);else npcIdle(J,t,J.sp);
-  if(J.strW){if(!(anim=='idle'&&J.sp.bow)){J.drawB=0;J.onString=0;J.nocked=false}J.arrowFly=null}
-  syncSkirt(J);if(J.strW){stringPull(J);J.arrowW&&(J.arrowW.vis=false)}
+  if(anim=='walk')npcWalk(J,t,J.sp);else if(anim=='run'){hRun(J,t);if(J.sp.wpn)poleRun(J,t)}else if(anim=='atk'){if(e.al_)allyAtk(J,t,e);else guardThrust(J,t)}else npcIdle(J,t,J.sp);
+  if(J.strW){if(!((anim=='idle'||anim=='atk')&&J.sp.bow)){J.drawB=0;J.onString=0;J.nocked=false}J.arrowFly=null}
+  syncSkirt(J);if(J.strW){stringPull(J);J.arrowW&&(J.arrowW.vis=anim=='atk'&&!!J.nocked)}
   renderPose(J,fw,fh,sc);let cv=grab(J,fw,fh);if(!cv){trim();FCB.max=Math.max(8<<20,FCB.max*.6);cv=grab(J,fw,fh)}if(!cv){if(S.src){blit(px,py,S.fw||fw,S.fh||fh,1,S.src);return true}return false}FR.mk='';
   FCACHE.set(ck,cv);FCB.bytes+=cv.width*cv.height*4;while(FCB.bytes>FCB.max&&FCACHE.size){const k0=FCACHE.keys().next().value,c0=FCACHE.get(k0);FCB.bytes-=c0.width*c0.height*4;FCACHE.delete(k0)}S.src=cv;S.fw=fw;S.fh=fh}
  blit(px,py,S.fw||fw,S.fh||fh,1,S.src);return true}
@@ -5317,16 +5329,43 @@ const POSE3={
  'Warrior':J=>{rest2(J);setArm(J,-1,[-.35,1,.15],[-.1,1,.35]);setArm(J,1,[.35,-.2,.9],[.15,.15,1]);J.wr.r=[0,0,0];J.spine.r=[.05,-.2,0];J['leg-1'].r=[-.35,0,-.08];J.leg1.r=[.3,0,.06];J['kn-1'].r=[.35,0,0]}};
 // what each pose does with the gear: hold it if it looks right in the hand, otherwise put it away
 // (a big weapon across the back, a small one at the hip, the bow slung across the back, the shield on the back)
-const POSEGEAR={'Stand':{w:1,b:1,s:1},'Double Bicep':{w:0,b:0,s:0},'Victory Roar':{w:1,b:1,s:0},'Hero':{w:0,b:0,s:0},'Iron Fold':{w:0,b:0,s:0},'Warrior':{w:1,b:0,s:1}};
+const POSEGEAR={'Stand':{w:1,b:1,s:1},'Double Bicep':{w:0,b:0,s:0},'Victory Roar':{w:1,b:1,s:0},'Hero':{w:0,b:0,s:0},'Iron Fold':{w:0,b:0,s:0},'Warrior':{w:1,b:0,s:2}};
+// the Aegis of Warding: a tall kite shield of deep blue in a silver rim, a glowing ward circle and star, a crystal at its heart and silver wings at the top
+function aegisNodes(sd){sd.ch.length=0;const K=[[-.165,.25],[0,.3],[.165,.25],[.185,.06],[.105,-.17],[0,-.34],[-.105,-.17],[-.185,.06]],Kr=K.map(([x,y])=>[x*1.1,y*1.08+.004]);
+ sd.add(N3({mesh:mesh('g3aeg',()=>extrude(K,.04)),c:'#22397f',met:.35,mat:M_.metal,ow:.8}),N3({mesh:mesh('g3aegr',()=>extrude(Kr,.026)),p:[0,0,-.008],c:'#d6dee8',met:.85,mat:M_.metal,ow:.7}),
+  N3({mesh:mesh('g3aegi',()=>extrude(K.map(([x,y])=>[x*.86,y*.86+.005]),.006)),p:[0,0,.022],c:'#2c4aa0',met:.4,mat:M_.metal,ow:.3}),
+  N3({mesh:mesh('g3aegw',()=>torus(.092,.009,28,6)),p:[0,.02,.03],r:[PI/2,0,0],c:'#a8e6ff',mat:M_.glow,ow:0}),N3({mesh:mesh('g3aegw2',()=>torus(.122,.005,30,6)),p:[0,.02,.028],r:[PI/2,0,0],c:'#d6dee8',met:.8,mat:M_.metal,ow:.3}),
+  N3({mesh:mesh('g3aegs1',()=>extrude([[0,.115],[.024,0],[0,-.115],[-.024,0]],.01)),p:[0,.02,.034],c:'#eaf6ff',mat:M_.glow,ow:0}),N3({mesh:mesh('g3aegs1',()=>extrude([[0,.115],[.024,0],[0,-.115],[-.024,0]],.01)),p:[0,.02,.034],r:[0,0,PI/2],c:'#eaf6ff',mat:M_.glow,ow:0}),
+  N3({mesh:mesh('g3aegs2',()=>extrude([[0,.06],[.014,0],[0,-.06],[-.014,0]],.008)),p:[0,.02,.032],r:[0,0,PI/4],c:'#9fd8ff',mat:M_.glow,ow:0}),N3({mesh:mesh('g3aegs2',()=>extrude([[0,.06],[.014,0],[0,-.06],[-.014,0]],.008)),p:[0,.02,.032],r:[0,0,-PI/4],c:'#9fd8ff',mat:M_.glow,ow:0}),
+  N3({mesh:mesh('g3aegg',()=>sphere(.028,14,10)),p:[0,.02,.044],s:[1,1.25,.75],c:'#7fd8ff',mat:M_.glow,ow:.4}),
+  N3({mesh:mesh('g3aegt',()=>sphere(.016,10,8)),p:[0,-.27,.03],c:'#d6dee8',met:.85,ow:.4}));
+ for(const sx of[-1,1])for(let i=0;i<3;i++){const a=.35+i*.32;sd.add(N3({mesh:mesh('g3aegf',()=>extrude([[0,.014],[.09,.01],[.125,0],[.09,-.01],[0,-.014]],.01)),p:[sx*.025,.205,.032],r:[0,0,sx>0?a:PI-a],s:[1-i*.18,1,1],c:'#e4ebf2',met:.8,mat:M_.metal,ow:.5}))}}
+// scabbards: a leather sheath with a gilt throat and chape for swords and daggers; a black lacquered saya with a red cord for the katana
+function sheathNode(v){const g=N3({}),L=v=='dag'?.36:v=='great'?1.0:v=='kat'?.86:.8;
+ if(v=='kat'){const k=N3({r:[.08,0,0]});g.add(k);
+  k.add(N3({mesh:mesh('g3saya',()=>capsule(.026,.022,L+.04,10)),p:[0,-.1,0],s:[1,1,1.35],c:'#17131c',met:.35,mat:M_.metal,ow:.6}),
+   N3({mesh:mesh('g3koi',()=>lathe([[.03,.0],[.032,-.012],[.03,-.03],[0,-.03]],14)),p:[0,-.095,0],s:[1,1,1.35],c:'#c8a040',met:.7,ow:.5}),
+   N3({mesh:mesh('g3sgo',()=>torus(.031,.008,14,6)),p:[0,-.2,0],r:[PI/2,0,0],s:[1,1.35,1],c:'#8a1f2e',mat:M_.cloth,ow:.4}),
+   N3({mesh:mesh('g3sgo',()=>torus(.031,.008,14,6)),p:[0,-.235,0],r:[PI/2,0,0],s:[1,1.35,1],c:'#8a1f2e',mat:M_.cloth,ow:.4}),
+   N3({mesh:mesh('g3kjr',()=>lathe([[0,.0],[.024,-.004],[.024,-.04],[0,-.05]],12)),p:[0,-.1-L+.01,0],s:[1,1,1.35],c:'#3a3640',met:.6,ow:.5}));return g}
+ const r0=v=='dag'?.034:.04,r1=v=='dag'?.026:.03;
+ g.add(N3({mesh:mesh('g3sh2'+v,()=>capsule(r0,r1,L+.03,10)),p:[0,-.1,0],s:[1,1,.62],c:'#3a2414',mat:M_.leather,ow:.6}),
+  N3({mesh:mesh('g3sthr'+v,()=>lathe([[r0+.006,0],[r0+.008,-.02],[r0+.006,-.05],[0,-.05]],14)),p:[0,-.09,0],s:[1,1,.66],c:'#c8a040',met:.7,ow:.5}),
+  N3({mesh:mesh('g3schp'+v,()=>lathe([[0,.0],[r1+.005,0],[r1+.004,-.06],[0,-.085]],12)),p:[0,-.1-L+.03,0],s:[1,1,.66],c:'#c8a040',met:.7,ow:.5}),
+  N3({mesh:mesh('g3sbnd'+v,()=>torus(r0*.95,.006,14,6)),p:[0,-.1-L*.45,0],r:[PI/2,0,0],s:[1,.66,1],c:'#c8a040',met:.7,ow:.4}));return g}
 function stowGear(J,pz){const G=POSEGEAR[pz]||POSEGEAR.Stand,sp=J.sp,moved=[];const mv=(n,par,p,r,sc)=>{const op=n.par0||null;moved.push([n,n.p,n.r,n.s,n.__par]);const from=n.__par;if(from){const i=from.ch.indexOf(n);if(i>=0)from.ch.splice(i,1)}par.add(n);n.__par=par;n.p=p;n.r=r;if(sc)n.s=sc};
  if(J.wpn&&!J.wpn.__par)J.wpn.__par=J.wr;if(J.bow&&!J.bow.__par)J.bow.__par=J.wl;if(J.sd&&!J.sd.__par)J.sd.__par=J.spine;
  const b=sp.bulk||1,v=sp.wpn&&sp.wpn.v;
  if(J.wpn&&!G.w){if(v=='axe'||v=='great'||v=='halberd'||v=='staff')mv(J.wpn,J.spine,[.12*b,.62,-.2*b],[PI,0,.55]);
-  else{mv(J.wpn,J.spine,[.215*b,.06,.06*b],[.42,0,.12]);J.sheath=J.sheath||N3({mesh:mesh('g3sheath'+v,()=>capsule(.036,.03,v=='dag'?.32:v=='kat'?.82:.76,8)),p:[0,-.1,0],s:[1,1,.6],c:'#3a2414',mat:M_.leather,ow:.6});if(!J.wpn.ch.includes(J.sheath))J.wpn.add(J.sheath);J.sheath.vis=true;moved.push([J.sheath,'vis'])}}
+  else{mv(J.wpn,J.spine,[.215*b,.06,.06*b],[.42,0,.12]);J.sheath=J.sheath||sheathNode(v);if(!J.wpn.ch.includes(J.sheath))J.wpn.add(J.sheath);J.sheath.vis=true;moved.push([J.sheath,'vis']);
+   // the blade is inside the scabbard: only the hilt shows
+   for(const n of J.wpn.ch)if(n.mesh&&/^g3(blade|glow)/.test(MESHK_(n))&&n.vis!==false){n.vis=false;moved.push([n,'show'])}}}
  if(J.bow&&!G.b)mv(J.bow,J.spine,[.02,.38,-.2*b],[0,PI,-.75]);
  if(J.sd&&!G.s)mv(J.sd,J.spine,[0,.34,-.24*b],[0,PI,0]);
+ // a shield the pose holds up rides on the forearm, facing the way the arm points
+ if(J.sd&&G.s==2)mv(J.sd,J.el1,[.03,-.34,0],[PI/2,PI/2,0]);
  J.stowed=moved}
-function unstowGear(J){if(!J.stowed)return;for(const m of J.stowed.reverse()){if(m[1]=='vis'){m[0].vis=false;continue}const[n,p,r,sc,par]=m,cur=n.__par;if(cur){const i=cur.ch.indexOf(n);if(i>=0)cur.ch.splice(i,1)}par.add(n);n.__par=par;n.p=p;n.r=r;n.s=sc}J.stowed=null}
+function unstowGear(J){if(!J.stowed)return;for(const m of J.stowed.reverse()){if(m[1]=='vis'){m[0].vis=false;continue}if(m[1]=='show'){m[0].vis=true;continue}const[n,p,r,sc,par]=m,cur=n.__par;if(cur){const i=cur.ch.indexOf(n);if(i>=0)cur.ch.splice(i,1)}par.add(n);n.__par=par;n.p=p;n.r=r;n.s=sc}J.stowed=null}
 // biceps that bulge when flexed
 function biceps(J,on){if(!J.bis){J.bis=[];for(const s of[-1,1]){const up=J['sh'+s].ch.find(n=>n.mesh&&/^upper/.test(MESHK_(n)));const c=up?up.c:hex('#c08060'),k=(J.sp.bulk||1);
   for(const[y,z,sx,sy,sz]of[[-.15,.06,.082,.12,.075],[-.1,.085,.06,.07,.05]]){const n=N3({mesh:mesh('g3bicep',()=>sphere(1,14,10)),p:[0,y,z*k],s:[sx*k,sy,sz*k],ow:.6,mat:up?up.mat:M_.cloth});n.c=c;n.pat=up?up.pat:0;J['sh'+s].add(n);J.bis.push(n)}}}
@@ -5369,6 +5408,13 @@ function legsStep(J,p){const a=p*2*PI,l1=Math.max(0,Math.sin(a)),l2=Math.max(0,-
 // ---- masterwork: gold gear catches the light with small twinkling glints along it ----
 function mwSpots(J){walk(J.scene,M4.id(),[]);const{VP}=cam3(),f=M4.xf(VP,[0,0,0]),W=VW3*VK*U3*.85,H=VH3*VK*U3*.85,pr=(n,l)=>{const g=M4.xf(VP,M4.xf(n.W,l));return[16+((g[0]-f[0])*.5)*W,29-((g[1]-f[1])*.5)*H]},o=[];
  try{if(J.bow&&J.bow.vis!==false&&J.bowL&&J.bowL.length){const d=J.bend||0;for(const t of[-.9,-.45,0,.45,.9])o.push(pr(J.bow,[0,t*.68*(1-.085*d),.11-(.11+.065*d)*t*t-.012*d*Math.abs(t)]))}else if(J.wpn){for(const y of[-.15,-.4,-.65,-.85])o.push(pr(J.wpn,[0,y,0]))}}catch(_){}return o.length?o:null}
+// venom beads on the axe's edge, swells and drips
+function vnSpots(J){walk(J.scene,M4.id(),[]);const{VP}=cam3(),f=M4.xf(VP,[0,0,0]),W=VW3*VK*U3*.85,H=VH3*VK*U3*.85,pr=(n,l)=>{const g=M4.xf(VP,M4.xf(n.W,l));return[16+((g[0]-f[0])*.5)*W,29-((g[1]-f[1])*.5)*H]};
+ try{return[[0,-.44,-.2],[0,-.56,-.235],[0,-.66,-.19]].map(l=>pr(J.wpn,l))}catch(_){return null}}
+function vnDrip(px,py,S,now){cx.save();for(let i=0;i<S.length;i++){const ph=((now/1500)+i*.37)%1,x=px+S[i][0],y=py+S[i][1];
+  const g=cx.createRadialGradient(x,y,0,x,y,4.5);g.addColorStop(0,'rgba(168,255,74,.6)');g.addColorStop(1,'rgba(90,200,40,0)');cx.fillStyle=g;cx.fillRect(x-4.5,y-4.5,9,9);
+  let dy=0,r=1,al=1;if(ph<.6){r=1+ph/.6*1.3}else{const k=(ph-.6)/.4;dy=2.5+k*k*20;r=1.6;al=1-k*.75}
+  cx.globalAlpha=al;cx.fillStyle='#c4ff3a';cx.strokeStyle='#123d0a';cx.lineWidth=.6;cx.beginPath();cx.ellipse(x,y+dy+r*.4,r*.85,r*1.25,0,0,7);cx.fill();cx.stroke();cx.fillStyle='rgba(255,255,240,.9)';cx.fillRect(x-r*.35,y+dy,.5,.5);cx.globalAlpha=1}cx.restore()}
 function mwGlint(px,py,S,now){cx.save();cx.globalCompositeOperation='lighter';for(let i=0;i<S.length;i++){const ph=((now/900)+i*.37)%1,a=Math.max(0,Math.sin(ph*PI)),r=1.5+a*3.2;if(a<.05)continue;const x=px+S[i][0],y=py+S[i][1];
   const g=cx.createRadialGradient(x,y,0,x,y,r*1.6);g.addColorStop(0,`rgba(255,240,170,${.7*a})`);g.addColorStop(1,"rgba(255,200,60,0)");cx.fillStyle=g;cx.fillRect(x-r*1.6,y-r*1.6,r*3.2,r*3.2);
   cx.strokeStyle=`rgba(255,250,220,${.9*a})`;cx.lineWidth=.8;cx.beginPath();cx.moveTo(x-r,y);cx.lineTo(x+r,y);cx.moveTo(x,y-r);cx.lineTo(x,y+r);cx.stroke()}cx.restore()}
@@ -5416,8 +5462,8 @@ function drawPlayer(e,px,py){if(!OK)return false;const J=getLook(),now=NOW;
   if(J.strW){if(anim!='bow'){J.drawB=0;J.onString=0;J.nocked=false}J.arrowFly=null}
   if(P.dead){J.head.r[0]+=.35;J.spine.r[0]+=.14;for(const s_ of[-1,1]){J['sh'+s_].r=[.08,0,s_*.06];J['el'+s_].r=[-.15,0,0]}J.body.p[1]+=.03+Math.sin(t*2*PI)*.015}
   syncSkirt(J);if(J.strW){stringPull(J);J.arrowW&&(J.arrowW.vis=J.nocked)}
-  renderPose(J,fw,fh,sc);if(anim=='bow'){const b=bowSpot(J);if(b)BOWAT.set(e,b)}ST.mwAt=J.sp.mw||(J.sp.wpn&&J.sp.wpn.mw)?mwSpots(J):null}
- if(ST.mwAt&&!P.dead)mwGlint(px,py,ST.mwAt,now);
+  renderPose(J,fw,fh,sc);if(anim=='bow'){const b=bowSpot(J);if(b)BOWAT.set(e,b)}ST.mwAt=J.sp.mw||(J.sp.wpn&&J.sp.wpn.mw)?mwSpots(J):null;ST.vnAt=J.sp.wpn&&J.sp.wpn.c=='#6fd05a'&&J.wpn&&J.wpn.vis!==false?vnSpots(J):null}
+ if(ST.mwAt&&!P.dead)mwGlint(px,py,ST.mwAt,now);if(ST.vnAt&&!P.dead)vnDrip(px,py,ST.vnAt,now);
  const GL=anim=='cast'&&P.cast&&at>=0?glyphAt(P.cast,at):null,back=GL&&DIRS8[ST.dir][1]<0;if(back)drawGlyph(GL,px,py,ST.dir);
  blit(px,py,fw,fh,P.dead?.82:(typeof sneak!='undefined'&&sneak)?.6:1);if(GL&&!back)drawGlyph(GL,px,py,ST.dir);return true}
 // the preview can zoom to the face and be turned by dragging or with the arrows
@@ -5449,7 +5495,7 @@ try{GLC.addEventListener('webglcontextlost',ev=>{ev.preventDefault();LOST=true},
 const live=()=>OK&&!!gl&&!LOST&&!gl.isContextLost();
 // frames for the town are let go in a dungeon, and come back as they are needed
 function trim(){FCACHE.clear();FCB.bytes=0}
-return{_t:{beastModel,tarShot,legsStep,legsMove,renderPose,hSwing,syncSkirt,stringPull,cam3,crm:k=>creatureModel(k),drawCreature},pv:PV,trim,bowAt:e=>BOWAT.get(e)||null,mon(e,k,px,py){if(!live()||!(MON3[k]||CR3[k]||BEAST[k]))return false;try{return BEAST[k]?drawBeast(e,k,px,py):CR3[k]?drawCreature(e,k,px,py):drawMon(e,k,px,py)}catch(err){if(ERRS++<3)console.error(err);return false}},foe(e,px,py){if(!live())return false;try{return drawFoe(e,px,py)}catch(err){if(ERRS++<3)console.error(err);return false}},npc(e,k,px,py){if(!live())return false;try{return drawNpc(e,k,px,py)}catch(err){if(ERRS++<3)console.error(err);return false}},draw(e,px,py){if(!live())return false;try{return drawPlayer(e,px,py)}catch(err){if(ERRS++<3)console.error(err);if(ERRS>20)OK=false;return false}},preview(e,px,py){if(!live())return false;try{return drawPreview(e,px,py)}catch(err){if(ERRS++<3)console.error(err);return false}},get ok(){return live()},models:MODELS,glc:()=>GLC,look:()=>getLook()}
+return{_t:{allyAtk,BIDLE,poleRun,npcSpec,buildNpc,hRun,hWalk,npcWalk,npcIdle,guardThrust,grab,sizeNow,stowGear,unstowGear,POSE3,getLook,IDLE,archer,hCast,foeLook,rest2,weaponNodes,DIRS8,MODELS,beastModel,tarShot,legsStep,legsMove,renderPose,hSwing,syncSkirt,stringPull,cam3,crm:k=>creatureModel(k),drawCreature},pv:PV,trim,bowAt:e=>BOWAT.get(e)||null,mon(e,k,px,py){if(!live()||!(MON3[k]||CR3[k]||BEAST[k]))return false;try{return BEAST[k]?drawBeast(e,k,px,py):CR3[k]?drawCreature(e,k,px,py):drawMon(e,k,px,py)}catch(err){if(ERRS++<3)console.error(err);return false}},foe(e,px,py){if(!live())return false;try{return drawFoe(e,px,py)}catch(err){if(ERRS++<3)console.error(err);return false}},npc(e,k,px,py){if(!live())return false;try{return drawNpc(e,k,px,py)}catch(err){if(ERRS++<3)console.error(err);return false}},draw(e,px,py){if(!live())return false;try{return drawPlayer(e,px,py)}catch(err){if(ERRS++<3)console.error(err);if(ERRS>20)OK=false;return false}},preview(e,px,py){if(!live())return false;try{return drawPreview(e,px,py)}catch(err){if(ERRS++<3)console.error(err);return false}},get ok(){return live()},models:MODELS,glc:()=>GLC,look:()=>getLook()}
 })()}catch(err){try{console.warn('3D characters unavailable, using the drawn ones',err)}catch(_){}return{ok:false,draw(){return false},models:new Map()}}})();
 {const ed0=enterD;enterD=function(){try{GX3.trim&&GX3.trim()}catch(_){}return ed0.apply(this,arguments)}}
 const G3MON=new Set(['drake','wbdrg','orc','norc','oarch','warlord','wbork','skel','nskel','skarch','lich','wboss','ghoul','wraith','rat','nrat','wbrat','ratman','skrix','lizardman','zharak','ogre','grumthar','harpy','harch','shrieka','treant','elder','gargoyle','demon','devil','pitlord','nightmare','cinder','efire','eair','ewater','eearth','esum']);
@@ -5758,6 +5804,94 @@ function g3CastThen(k,fn){const D=CSPD[k],now=gt();if(!ATK2||!D||P.cast||P.dead|
 {const c0=castGo0;castGo0=function(k){return (k=='summon'||k=='poly')?cast0(k):c0(k)}}
 {const s0=summon;summon=function(k){$('dlg').style.display='none';if(P.dead||P.mp<SPELLS.summon.mp)return s0(k);g3CastThen('summon',()=>s0(k))}}
 {const p0=doPoly;doPoly=function(f){$('dlg').style.display='none';if(f=='none'||P.dead||P.mp<SPELLS.poly.mp)return p0(f);g3CastThen('poly',()=>p0(f))}}
+
+
+// ===================== V33: companion behaviour, storage, special items, elemental hits =====================
+// ---- companions and the player pass through each other ----
+// a companion may step through the player's square on the way somewhere; it never stops on it
+function g3AlNudge(a){if(a.x==P.x&&a.y==P.y){const o=nearFree(P.x,P.y);if(o){a.x=o[0];a.y=o[1]}}}
+function g3AlPath(a,x,y,adj){FW='w';try{const p=findPath(a.x,a.y,x,y,adj,900);return p&&p.length?p[0]:null}finally{FW=0}}
+gxStep=function(a,g){const s=pm_(a,g);if(s){a.x=s[0];a.y=s[1]}};
+// ---- melee companions wade in: they pick a foe they can actually reach, nearest the fight ----
+function g3AlMeleeTarget(a){const ok=m=>m&&m.hp>0&&mons.includes(m)&&!m.hid&&!ign(m)&&!(m.th_&&m.st=='stalk');
+ const pt=P.task&&P.task.type=='attack'&&ok(P.task.m)&&cheb(P.task.m,P)<=10?P.task.m:null;
+ const C_=mons.filter(m=>ok(m)&&(m===pt||cheb(m,P)<=8||(m.agg||0)>NOW&&cheb(m,a)<=9)).sort((m,n)=>(m===pt?-2:0)-(n===pt?-2:0)+cheb(m,a)-cheb(n,a));
+ for(const m of C_.slice(0,4)){if(cheb(m,a)<=1)return{m,s:null};const s=g3AlPath(a,m.x,m.y,1);if(s)return{m,s}}return null}
+// ---- Pip: darts in to pick a pocket, then runs off somewhere quiet and hides ----
+function g3PipSpot(a,foes){let best=null,bs=-1e9;for(let dy=-7;dy<=7;dy++)for(let dx=-7;dx<=7;dx++){const x=P.x+dx,y=P.y+dy;if(Math.hypot(dx,dy)>7.2||Math.hypot(dx,dy)<2)continue;if(!(x==a.x&&y==a.y)&&!free(x,y))continue;
+  const fd=Math.min(...foes.map(m=>Math.hypot(m.x-x,m.y-y))),ad=Math.hypot(a.x-x,a.y-y);let s=Math.min(fd,7)*2-Math.hypot(dx,dy)*.35-ad*.15;if(fd<3)s-=20;if(s>bs){bs=s;best={x,y}}}return best}
+function g3PipAI(a,now,dP){const L=gxAlL('pip'),okM=m=>m.hp>0&&mons.includes(m)&&!m.hid&&!ign(m);
+ const foes=mons.filter(m=>okM(m)&&(cheb(m,a)<=9||cheb(m,P)<=8));
+ const eng=m=>okM(m)&&!m.pp_&&cheb(m,P)<=8&&(cheb(m,P)<=3||(m.agg||0)>now||(P.task&&P.task.m===m));
+ // pick a mark once he is ready again
+ if(a.pst!='steal'&&now>=(a.hold||0)){const c=foes.filter(eng).sort((m,n)=>cheb(m,a)-cheb(n,a))[0];if(c){a.pst='steal';a.mk=c;a.tries=0}}
+ if(a.pst=='steal'){const m=a.mk;
+  if(!m||!okM(m)||m.pp_){a.pst='hide';a.hs=null}
+  else if(cheb(m,a)<=1){m.pp_=1;a.lt=now;a.ld=[Math.sign(m.x-a.x),Math.sign(m.y-a.y)];if(m.x!=a.x)a.f=m.x>a.x?1:-1;
+   if(Math.random()<.45+.03*(L-1)){const mm=m;setTimeout(()=>{try{gxPipLoot(mm)}catch(_){}},500)}else fl(a.x,a.y,'…','#d8c8a0');
+   a.pst='hide';a.hs=null;a.hold=now+2600;a.next=now+380;return}
+  else{const s=g3AlPath(a,m.x,m.y,1);if(s&&++a.tries<60){a.x=s[0];a.y=s[1];a.hide_=1;a.next=now+150;return}a.pst='hide';a.hs=null;a.hold=now+1500}}
+ if(foes.length){a.pst='hide';a.hide_=1;
+  if(!a.hs||Math.hypot(a.hs.x-P.x,a.hs.y-P.y)>7.5||foes.some(m=>Math.hypot(m.x-a.hs.x,m.y-a.hs.y)<3))a.hs=g3PipSpot(a,foes);
+  if(a.hs&&(a.x!=a.hs.x||a.y!=a.hs.y)){const s=g3AlPath(a,a.hs.x,a.hs.y,0);if(s){a.x=s[0];a.y=s[1];a.next=now+150;return}a.hs=null}
+  g3AlNudge(a);a.next=now+300;return}
+ a.pst=null;a.hs=null;a.hide_=0;a.hold=0;
+ if(dP>2){gxStep(a,P);a.next=now+(dP>4?170:240)}else{g3AlNudge(a);a.next=now+300}}
+{const a0=gxAlAI;gxAlAI=function(now){const id=WN.ally;
+ if(id!=='pip'&&!(id&&GXAD[id]&&GXAD[id].mode=='melee'))return a0(now);
+ gxMigrate();if(gxAtHome(id)){GXAL=null;return}if(!GXAL||GXAL.id!==id)gxAlMake();const a=GXAL;if(!a||P.dead)return;
+ const here=lv||ins||null,dP=cheb(a,P),D=GXAD[id];
+ if(a.ctx!==here||dP>12||!WK[t[a.y*W+a.x]]){const o=nearFree(P.x,P.y);if(o){a.x=a.rx=o[0];a.y=a.ry=o[1]}a.ctx=here;a.next=now+400;return}
+ if(now<a.next)return;
+ if(id=='pip')return g3PipAI(a,now,dP);
+ if(D.heal&&P.hp>0&&P.hp<P.mh*D.heal.at&&now>a.hcd)return a0(now);
+ const T_=g3AlMeleeTarget(a);
+ if(T_){const tg=T_.m;
+  if(cheb(tg,a)<=1){a.lt=now;a.ld=[Math.sign(tg.x-a.x),Math.sign(tg.y-a.y)];if(tg.x!=a.x)a.f=tg.x>a.x?1:-1;a.next=now+gxAlCd(id,D.cd);fx.push({x:a.x,y:a.y,a:Math.atan2(tg.y-a.y,tg.x-a.x),c:'#f2f2f2',t:now});
+   if(Math.random()<.85+gxAlHitB(id)){sfx('hit');let dm=gxAlDm(id,ri(...D.dm));if(D.back&&!tg.mk_){tg.mk_=1;dm*=2;fl(a.x,a.y,'Backstab!','#ffd75a')}gxAlHit(a,tg,dm)}else{sfx('miss');fl(tg.x,tg.y,'miss','#aaa')}
+   // never left standing inside the player: shuffle to another free square beside the foe
+   if(a.x==P.x&&a.y==P.y){for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++){const x=tg.x+dx,y=tg.y+dy;if((dx||dy)&&free(x,y)&&cheb({x,y},a)<=1){a.x=x;a.y=y;dy=dx=9}}}
+   return}
+  a.x=T_.s[0];a.y=T_.s[1];a.next=now+175;return}
+ if(dP>2){gxStep(a,P);a.next=now+(dP>4?170:240)}else{g3AlNudge(a);a.next=now+300}}}
+// ranged companions don't lunge at their targets; Pip's quick grab doesn't either
+{const n0=g3NoLunge;g3NoLunge=function(e){if(e&&e.al_){const D=GXAD[e.id];return !!(D&&(D.mode=='ranged'||D.mode=='thief'))}return n0(e)}}
+// ---- thieves never wind up a weapon: their hands are for your pack ----
+{const at0=atT;atT=function(e){if(e&&e.th_){const D=atkInfo(e).d;return e.lt&&NOW-e.lt<D?(NOW-e.lt)/D:-1}
+ // a player-killer's wind-up follows its attack timer, not each footstep
+ if(e&&e.pk_&&!(e.lt&&NOW-e.lt<atkInfo(e).d)){const n0=e.next;e.next=0;try{return at0(e)}finally{e.next=n0}}return at0.apply(this,arguments)}}
+// ---- the Windrunner Longbow is a special item: it can never be sold ----
+const G3NOSELL=new Set(['wbow']);
+function g3NoSell(id){return G3NOSELL.has(id)||!!(GEAR[id]&&GEAR[id].bs_&&G3NOSELL.has(GEAR[id].bs_))}
+try{GEAR.wbow.spc=1}catch(_){}
+{const s0=sellList;sellList=function(){return s0().replace(/<button data-s='(\d+)'([^>]*)>([\s\S]*?)<\/button>/g,(w,i,at,lb)=>{const id=bag[+i];if(!g3NoSell(id))return w;return `<button disabled style='opacity:.75'>✦ ${GEAR[id].n} · <span style='color:#ffd75a'>special: cannot be sold</span></button>`})}}
+try{document.addEventListener('click',e=>{const b=e.target&&e.target.closest&&e.target.closest('[data-s]');if(!b)return;const v=b.dataset.s;if(v==null||String(v)[0]=='p')return;const id=bag[+v];if(id&&g3NoSell(id)){e.stopPropagation();e.preventDefault();say(`The ${GEAR[id].n} is too special to sell.`,'#ffd75a')}},true)}catch(_){}
+// ---- elemental weapons show their element on every hit ----
+const G3EF=[];
+function g3ElFx(m,E,now){if(!E||!m)return;const tx=m.x,ty=m.y;
+ if(E.fire)G3EF.push({k:'fire',x0:P.x,y0:P.y,x1:tx,y1:ty,t:now});
+ if(E.light)G3EF.push({k:'light',x1:tx,y1:ty,t:now,sd:Math.random()*1e4});
+ if(E.cold)G3EF.push({k:'cold',x1:tx,y1:ty,t:now})}
+function g3ElDraw(now){for(let i=G3EF.length-1;i>=0;i--)if(now-G3EF[i].t>700)G3EF.splice(i,1);if(!G3EF.length)return;cx.save();
+ for(const f of G3EF){const a=now-f.t,X1=f.x1*T-cam.x+16,Y1=f.y1*T-cam.y+14;
+  if(f.k=='fire'){const fl_=230,p=Math.min(1,a/fl_),X0=f.x0*T-cam.x+16,Y0=f.y0*T-cam.y+10;
+   if(p<1){const X=X0+(X1-X0)*p,Y=Y0+(Y1-Y0)*p-Math.sin(p*Math.PI)*8;
+    for(let k=1;k<=5;k++){const q=Math.max(0,p-k*.06),x=X0+(X1-X0)*q,y=Y0+(Y1-Y0)*q-Math.sin(q*Math.PI)*8;cx.globalAlpha=.5-k*.08;cx.fillStyle=k<3?'#ffb040':'#c84010';cx.beginPath();cx.arc(x,y,5-k*.6,0,7);cx.fill()}
+    cx.globalAlpha=1;const g=cx.createRadialGradient(X,Y,0,X,Y,10);g.addColorStop(0,'#fff6c0');g.addColorStop(.35,'#ffb030');g.addColorStop(1,'rgba(255,80,0,0)');cx.fillStyle=g;cx.beginPath();cx.arc(X,Y,10,0,7);cx.fill()}
+   else{const u=(a-fl_)/300;if(u<1){const r=6+u*18;cx.globalAlpha=1-u;const g=cx.createRadialGradient(X1,Y1,0,X1,Y1,r);g.addColorStop(0,'#fff2b0');g.addColorStop(.4,'#ff9a2a');g.addColorStop(1,'rgba(220,60,0,0)');cx.fillStyle=g;cx.beginPath();cx.arc(X1,Y1,r,0,7);cx.fill();
+    cx.fillStyle='#ffcf60';for(let k=0;k<7;k++){const an=k*.9+f.t%7,d=r*1.05;cx.fillRect(X1+Math.cos(an)*d-1,Y1+Math.sin(an)*d*.6-1,2,2)}}}}
+  else if(f.k=='light'){if(a>420)continue;const al=a<60?1:1-(a-60)/360;let s=f.sd;const rnd=()=>{s=(s*9301+49297)%233280;return s/233280};
+   const top=Y1-150,pts=[[X1+(rnd()-.5)*30,top]];for(let i=1;i<=7;i++)pts.push([X1+(rnd()-.5)*(22-i*2.5),top+(Y1-top)*i/7]);pts[7]=[X1,Y1];
+   cx.globalAlpha=al*.35;cx.fillStyle='#e8f4ff';cx.beginPath();cx.ellipse(X1,Y1+4,22,8,0,0,7);cx.fill();
+   for(const[w,c,o]of[[7,'rgba(140,190,255,.35)',1],[3.2,'#bfe2ff',1],[1.4,'#ffffff',1]]){cx.globalAlpha=al*o;cx.strokeStyle=c;cx.lineWidth=w;cx.lineJoin='round';cx.beginPath();cx.moveTo(pts[0][0],pts[0][1]);for(const q of pts.slice(1))cx.lineTo(q[0],q[1]);cx.stroke()}
+   // a forked branch
+   cx.globalAlpha=al*.8;cx.strokeStyle='#cfe8ff';cx.lineWidth=1.2;cx.beginPath();const b=pts[3];cx.moveTo(b[0],b[1]);cx.lineTo(b[0]+(rnd()-.5)*24,b[1]+18);cx.lineTo(b[0]+(rnd()-.5)*34,b[1]+30);cx.stroke()}
+  else if(f.k=='cold'){if(a>450)continue;const u=a/450;cx.globalAlpha=1-u;cx.strokeStyle='#bfefff';cx.lineWidth=1.6;for(let k=0;k<6;k++){const an=k*Math.PI/3+.3,r0=4+u*6,r1=10+u*14;cx.beginPath();cx.moveTo(X1+Math.cos(an)*r0,Y1+Math.sin(an)*r0*.7);cx.lineTo(X1+Math.cos(an)*r1,Y1+Math.sin(an)*r1*.7);cx.stroke()}
+   cx.fillStyle='rgba(200,240,255,.5)';cx.beginPath();cx.ellipse(X1,Y1+6,10+u*10,4+u*3,0,0,7);cx.fill()}}
+ cx.restore()}
+{const d0=drawFliers;drawFliers=function(now){d0(now);try{g3ElDraw(now)}catch(_){}}}
+// ---- storage chest: arrows and potions ----
+function g3ApRows(mrow){const ks=['arr',...Object.keys(POT)].filter(k=>(inv[k]|0)>0||(BXM[k]|0)>0);return ks.length?ks.map(k=>mrow(k,k=='arr'?'Arrows':POT[k].n)).join(''):`<div class='d'>You have no arrows or potions.</div>`}
 
 
 ui();say('Welcome to The Light of Aethelguard. Tap to walk, a monster to fight, a tree to chop it down.');say('Purple marks on the minimap are dungeon entrances.','#b0a080');const ld=TITLE?0:load();PT0=gt();if(ld&&!lv&&!ins)delete tr[P.y*W+P.x];ui();if(TITLE)showTitle();else if(ld)say('Progress restored.','#9fd18b');setInterval(()=>{if(!document.hidden)save()},8000);setInterval(mtick,100);$('doom').onclick=()=>{if(gt()>doomT)doomHide()};let acWas=0;
